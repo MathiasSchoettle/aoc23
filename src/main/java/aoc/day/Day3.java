@@ -23,7 +23,7 @@ public class Day3 extends AbstractSolver {
         for (int i = 0; i < getLines().size(); i++) {
             var liner = Liner.build(getLines(), i);
 
-            sum += liner.getMatches().stream()
+            sum += liner.matches()
                     .filter(match -> liner.checkHorizontal(match) || liner.checkVertical(match))
                     .mapToInt(Liner.Match::value)
                     .sum();

@@ -2,6 +2,7 @@ package aoc.day.util;
 
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class Liner {
     public final String previous;
@@ -47,10 +48,9 @@ public class Liner {
         return !Character.valueOf(current.charAt(index)).equals('.');
     }
 
-    public List<Match> getMatches() {
+    public Stream<Match> matches() {
         return NUMBERS.matcher(current).results()
-                .map(m -> new Match(m.start(), m.end(), Integer.parseInt(m.group())))
-                .toList();
+                .map(m -> new Match(m.start(), m.end(), Integer.parseInt(m.group())));
     }
 
     public record Match(int start, int end, int value) {}
