@@ -22,11 +22,10 @@ public class Day3 extends AbstractSolver {
         for (int i = 0; i < getLines().size(); i++) {
             var liner = Liner.build(getLines(), i);
 
-            for (var match : liner.getMatches()) {
-                if (liner.checkVertical(match) || liner.checkHorizontal(match)) {
-                    sum += match.value();
-                }
-            }
+            sum += liner.getMatches().stream()
+                    .filter(match -> liner.checkHorizontal(match) || liner.checkVertical(match))
+                    .mapToInt(Liner.Match::value)
+                    .sum();
         }
 
         return sum;
