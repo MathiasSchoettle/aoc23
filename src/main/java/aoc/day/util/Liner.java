@@ -1,6 +1,5 @@
-package aoc.day;
+package aoc.day.util;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -37,8 +36,6 @@ public class Liner {
 
         var start = match.start + (match.start > 0 ? -1 : 0);
         var end = match.end + (match.end < current.length() - 1 ? 1 : 0);
-
-        System.out.println(line.substring(start, end) + " - " + line.matches("^[.]"));
 
         return !line.substring(start, end).replace(".", "").isEmpty();
     }

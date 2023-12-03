@@ -1,6 +1,7 @@
 package aoc.day;
 
 import aoc.AbstractSolver;
+import aoc.day.util.Liner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
