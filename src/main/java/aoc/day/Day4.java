@@ -24,7 +24,7 @@ public class Day4 extends AbstractSolver {
             sum += Arrays.stream(full[1].trim().split(" +"))
                     .map(Integer::parseInt)
                     .filter(winners::contains)
-                    .reduce(1, (v1,v2) -> v1 * 2) / 2;
+                    .reduce(1, (v1, v2) -> v1 * 2) / 2;
         }
 
         return sum;
