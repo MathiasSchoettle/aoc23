@@ -47,10 +47,18 @@ public abstract class AbstractSolver {
     }
 
     public List<String> lines() {
+        return lines(input);
+    }
+
+    public List<String> lines(String input) {
         return Arrays.stream(input.split("\n")).toList();
     }
 
     public List<String> splitByEmptyLine() {
+        return splitByEmptyLine(input);
+    }
+
+    public List<String> splitByEmptyLine(String input) {
         return Arrays.stream(input.split("\n\n")).toList();
     }
 
