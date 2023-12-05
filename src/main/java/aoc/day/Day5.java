@@ -4,6 +4,7 @@ import aoc.AbstractSolver;
 import aoc.day.util.day5.Ranger;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class Day5 extends AbstractSolver {
 
@@ -36,65 +37,54 @@ public class Day5 extends AbstractSolver {
     @Override
     public Object puzzle2() {
         var inputs = splitByEmptyLine();
+        Pattern pattern = Pattern.compile(" \\d+ \\d+");
 
-        var seedRanges = Arrays.stream(inputs.get(0).split(" ")).skip(1).map(Long::parseLong).toList();
-        List<Range> ranges = new ArrayList<>();
+        List<Range> ranges = pattern.matcher(inputs.get(0).split(":")[1]).results()
+                .map(match -> match.group().trim().split(" "))
+                .map(split -> new Range(Long.parseLong(split[0]), Long.parseLong(split[1]))).toList();
 
-        for (int i = 0; i < seedRanges.size(); i += 2) {
-            ranges.add(new Range(seedRanges.get(i), seedRanges.get(i + 1)));
+        var allRangeMaps = new ArrayList<List<RangeMap>>();
+        for (var block : inputs.stream().skip(1).toList()) {
+            var rangeMaps = block.lines().skip(1)
+                    .map(line -> line.split(" "))
+                    .map(arr -> Arrays.stream(arr).mapToLong(Long::parseLong).toArray())
+                    .map(arr -> new RangeMap(arr[1], arr[0], arr[2])).toList();
+
+            allRangeMaps.add(rangeMaps);
         }
 
-        List<List<Mapper>> mappers = inputs.stream().skip(1).map(block ->
-                Arrays.stream(block.split("\n"))
-                        .skip(1)
-                        .map(line -> {
-                            var arr = line.split(" ");
-                            return new Mapper(Long.parseLong(arr[1]), Long.parseLong(arr[0]), Long.parseLong(arr[2]));
-                        }).toList()).toList();
-
-        for (var mapper : mappers) {
+        for (var mapper : allRangeMaps) {
             ranges = nextRanges(ranges, mapper);
         }
 
         return ranges.stream().min(Comparator.comparingLong(o -> o.from)).orElseThrow().from;
     }
 
+    private List<Range> nextRanges(List<Range> ranges, List<RangeMap> mappers) {
 
-    private List<Range> nextRanges(List<Range> ranges, List<Mapper> mappers) {
-
-        // list of ranges which where in range of mappers
-        // store separately and merge with ranges at end to prevent subsequent mappers matching witch an already
-        // mapped region
         var mappedRanges = new ArrayList<Range>();
 
         for (var mapper : mappers) {
-
             var tempList = new ArrayList<Range>();
 
             for (var range : ranges) {
 
                 if (range.to() < mapper.source || range.from > mapper.to()) {
-                    // completely outside of mapper range
                     tempList.add(range);
-                } else {
-                    if (mapper.source - range.from > 0) {
-                        // left side of input range is outside of mapper range
-                        // should be handled by following mappers
-                        tempList.add(new Range(range.from, mapper.source - range.from));
-                    }
-
-                    if (range.to() - mapper.to() > 0) {
-                        // right side of input range is outside of mapper range
-                        // should be handled by following mappers
-                        tempList.add(new Range(mapper.to() - 1, range.to() - mapper.to()));
-                    }
-
-                    // if we are here we always have a part of the input range inside the mapper range
-                    // this is the part we need to transform and exclude from following mapper checks
-                    var upper = Math.max(range.from, mapper.source) - mapper.source + mapper.destination;
-                    var lower = Math.min(range.to(), mapper.to()) - mapper.source + mapper.destination;
-                    mappedRanges.add(new Range(upper, lower - upper));
+                    continue;
                 }
+
+                if (mapper.source - range.from > 0) {
+                    tempList.add(new Range(range.from, mapper.source - range.from));
+                }
+
+                if (range.to() - mapper.to() > 0) {
+                    tempList.add(new Range(mapper.to() - 1, range.to() - mapper.to()));
+                }
+
+                var upper = Math.max(range.from, mapper.source) - mapper.source + mapper.destination;
+                var lower = Math.min(range.to(), mapper.to()) - mapper.source + mapper.destination;
+                mappedRanges.add(new Range(upper, lower - upper));
             }
 
             ranges = tempList;
@@ -104,7 +94,7 @@ public class Day5 extends AbstractSolver {
         return mappedRanges;
     }
 
-    private record Mapper(long source, long destination, long count) {
+    private record RangeMap(long source, long destination, long count) {
         public long to() {return source + count;}
     }
 
