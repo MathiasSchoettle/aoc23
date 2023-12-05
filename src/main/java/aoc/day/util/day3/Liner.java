@@ -1,4 +1,4 @@
-package aoc.day.util;
+package aoc.day.util.day3;
 
 import java.util.List;
 import java.util.regex.Pattern;
