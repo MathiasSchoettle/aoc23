@@ -16,7 +16,7 @@ public class Day2 extends AbstractSolver {
         int sum = 0;
         var first = Map.of("red", 12, "green", 13, "blue", 14);
 
-        for (var line : getLines()) {
+        for (var line : lines()) {
             var gameSplit = line.split(":");
 
             var map = Arrays.stream(gameSplit[1].split(";"))
@@ -37,7 +37,7 @@ public class Day2 extends AbstractSolver {
 
         int sum = 0;
 
-        for (var line : getLines()) {
+        for (var line : lines()) {
             var map = Arrays.stream(line.split(":")[1].split(";"))
                     .flatMap(string -> Arrays.stream(string.trim().split(",")))
                     .map(string -> string.trim().split(" "))

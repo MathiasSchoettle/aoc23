@@ -6,10 +6,12 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractSolver {
     private final int day;
+    private final String input;
     private static final String YEAR = "2023";
     private static final String SESSION_COOKIE;
 
@@ -20,6 +22,7 @@ public abstract class AbstractSolver {
     public AbstractSolver(int day) {
         this.day = day;
         persistInput();
+        this.input = readFile();
     }
 
     public abstract Object puzzle1() throws Exception;
@@ -43,19 +46,29 @@ public abstract class AbstractSolver {
         }
     }
 
-    public List<String> getLines() {
+    public List<String> lines() {
+        return Arrays.stream(input.split("\n")).toList();
+    }
+
+    public List<String> splitByEmptyLine() {
+        return Arrays.stream(input.split("\n\n")).toList();
+    }
+
+    private String readFile() {
         try {
-            return Files.readAllLines(getInputFile().toPath());
+            return Files.readString(getInputFile().toPath());
         } catch (Exception e) {
             throw new RuntimeException("Error while reading input of " + day + " - " + e.getCause());
         }
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void persistInput() {
 
         if (getInputFile().exists()) return;
 
         try {
+            getInputFile().getParentFile().mkdirs();
             Files.createFile(getInputFile().toPath());
             Files.writeString(getInputFile().toPath(), getInput());
         } catch (Exception e) {
@@ -83,6 +96,6 @@ public abstract class AbstractSolver {
     }
 
     private File getInputFile() {
-        return new File((System.getProperty("java.io.tmpdir") + File.separator + day));
+        return new File(System.getProperty("java.io.tmpdir") + File.separator + "aoc" + File.separator + day);
     }
 }

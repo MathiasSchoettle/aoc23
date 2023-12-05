@@ -20,8 +20,8 @@ public class Day3 extends AbstractSolver {
     public Object puzzle1() {
         var sum = 0;
 
-        for (int i = 0; i < getLines().size(); i++) {
-            var liner = Liner.build(getLines(), i);
+        for (int i = 0; i < lines().size(); i++) {
+            var liner = Liner.build(lines(), i);
 
             sum += liner.matches()
                     .filter(match -> liner.checkHorizontal(match) || liner.checkVertical(match))
@@ -34,7 +34,7 @@ public class Day3 extends AbstractSolver {
 
     @Override
     public Object puzzle2() {
-        var lines = getLines();
+        var lines = lines();
         var map = new HashMap<Point, List<Integer>>();
 
         for (int i = 0; i < lines.size(); i++) {

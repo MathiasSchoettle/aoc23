@@ -9,7 +9,7 @@ public class Day1 extends AbstractSolver {
 
     @Override
     public Integer puzzle1() {
-        return getLines().stream()
+        return lines().stream()
                 .map(s -> s.replaceAll("\\D", ""))
                 .map(s -> s.charAt(0) + "" + s.charAt(s.length() - 1))
                 .mapToInt(Integer::parseInt)
@@ -30,7 +30,7 @@ public class Day1 extends AbstractSolver {
 
     @Override
     public Integer puzzle2() {
-        return getLines().stream()
+        return lines().stream()
                 .map(this::replaceTextNumbers)
                 .map(s -> s.replaceAll("\\D", ""))
                 .map(s -> s.charAt(0) + "" + s.charAt(s.length() - 1))

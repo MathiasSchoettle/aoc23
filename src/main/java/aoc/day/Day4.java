@@ -16,7 +16,7 @@ public class Day4 extends AbstractSolver {
     public Object puzzle1() {
         int sum = 0;
 
-        for (var line : getLines()) {
+        for (var line : lines()) {
             String[] full = line.split(":")[1].trim().split("\\|");
 
             var winners = Arrays.stream(full[0].trim().split(" +"))
@@ -36,7 +36,7 @@ public class Day4 extends AbstractSolver {
     @Override
     public Object puzzle2() {
 
-        var lines = getLines();
+        var lines = lines();
 
         Map<Integer, Integer> collect = IntStream.range(0, lines.size())
                 .boxed()
