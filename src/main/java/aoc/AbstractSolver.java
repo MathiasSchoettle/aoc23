@@ -19,6 +19,7 @@ public abstract class AbstractSolver {
 
     public AbstractSolver(int day) {
         this.day = day;
+        persistInput();
     }
 
     public abstract Object puzzle1() throws Exception;
@@ -44,22 +45,25 @@ public abstract class AbstractSolver {
 
     public List<String> getLines() {
         try {
-            persistInput();
             return Files.readAllLines(getInputFile().toPath());
         } catch (Exception e) {
             throw new RuntimeException("Error while reading input of " + day + " - " + e.getCause());
         }
     }
 
-    private void persistInput() throws Exception {
+    private void persistInput() {
 
         if (getInputFile().exists()) return;
 
-        Files.createFile(getInputFile().toPath());
-        Files.writeString(getInputFile().toPath(), getInput());
+        try {
+            Files.createFile(getInputFile().toPath());
+            Files.writeString(getInputFile().toPath(), getInput());
+        } catch (Exception e) {
+            throw new RuntimeException("Error while persisting input of " + day + " - " + e.getCause());
+        }
     }
 
-    private String getInput() throws Exception {
+    private String getInput() {
         var urlString = String.format("https://adventofcode.com/%s/day/%s/input", YEAR, day);
 
         try (var client = HttpClient.newHttpClient()) {
@@ -73,6 +77,8 @@ public abstract class AbstractSolver {
                     .build();
 
             return client.send(request, HttpResponse.BodyHandlers.ofString()).body();
+        } catch (Exception e) {
+            throw new RuntimeException("Error while fetching data of " + day + " - " + e.getCause());
         }
     }
 
