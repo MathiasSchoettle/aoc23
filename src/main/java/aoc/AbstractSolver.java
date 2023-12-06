@@ -46,7 +46,7 @@ public abstract class AbstractSolver {
 
     private Result solve1() {
         try {
-            return new Result.Solution(puzzle1());
+            return new Result.Solution(puzzle1(), day);
         } catch (Exception e) {
             return new Result.Error(e);
         }
@@ -54,7 +54,7 @@ public abstract class AbstractSolver {
 
     private Result solve2() {
         try {
-            return new Result.Solution(puzzle2());
+            return new Result.Solution(puzzle2(), day);
         } catch (Exception e) {
             return new Result.Error(e);
         }

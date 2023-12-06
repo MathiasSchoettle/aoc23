@@ -10,7 +10,7 @@ public sealed abstract class Result permits Result.Error, Result.Solution {
     }
 
     static final class Error extends Result {
-        public Exception exception;
+        private final Exception exception;
 
         public Error(Exception exception) {
             this.exception = exception;
@@ -23,15 +23,17 @@ public sealed abstract class Result permits Result.Error, Result.Solution {
     }
 
     static final class Solution extends Result {
-        public Object result;
+        private final Object result;
+        private final int day;
 
-        public Solution(Object result) {
+        public Solution(Object result, int day) {
             this.result = result;
+            this.day = day;
         }
 
         @Override
         public String message() {
-            return "Solution is " + result;
+            return "Solution for " + day + " is " + result;
         }
     }
 
