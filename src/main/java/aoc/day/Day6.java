@@ -15,11 +15,11 @@ public class Day6 extends AbstractSolver {
 
         var times = Arrays.stream(lines.get(0).split("\\s+"))
                 .skip(1)
-                .map(Integer::parseInt)
+                .map(Long::parseLong)
                 .toList();
         var distances = Arrays.stream(lines.get(1).split("\\s+"))
                 .skip(1)
-                .map(Integer::parseInt)
+                .map(Long::parseLong)
                 .toList();
 
         long result = 1L;
@@ -49,14 +49,30 @@ public class Day6 extends AbstractSolver {
         var time = Long.parseLong(lines.get(0).split(":")[1].replaceAll("\\s+", "")) + 1;
         var record = Long.parseLong(lines.get(1).split(":")[1].replaceAll("\\s+", ""));
 
-        var current = 0L;
-        var stepSize = time / 2L;
+        var left = 0L;
+        var right = time / 2L;
+        var result = 0L;
 
-        while (stepSize >= 1) {
-            current += record < ((time - current) * current) ? -stepSize : stepSize;
-            stepSize /= 2;
+        while (left < right) {
+            var current = (right + left) / 2L;
+
+            if ((time - current) * current <= record) {
+                if ((time - current + 1L) * (current + 1L) > record) {
+                    result = current + 1;
+                    break;
+                }
+
+                left = current;
+            } else {
+                if ((time - current - 1L) * (current - 1L) <= record) {
+                    result = current;
+                    break;
+                }
+
+                right = current;
+            }
         }
 
-        return time - 2 * current;
+        return time - 2 * result;
     }
 }
