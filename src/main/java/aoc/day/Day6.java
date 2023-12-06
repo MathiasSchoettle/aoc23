@@ -45,6 +45,18 @@ public class Day6 extends AbstractSolver {
 
     @Override
     public Object puzzle2() {
-        return null;
+        var lines = lines();
+        var time = Long.parseLong(lines.get(0).split(":")[1].replaceAll("\\s+", "")) + 1;
+        var record = Long.parseLong(lines.get(1).split(":")[1].replaceAll("\\s+", ""));
+
+        var current = 0L;
+        var stepSize = time / 2L;
+
+        while (stepSize >= 1) {
+            current += record < ((time - current) * current) ? -stepSize : stepSize;
+            stepSize /= 2;
+        }
+
+        return time - 2 * current;
     }
 }
