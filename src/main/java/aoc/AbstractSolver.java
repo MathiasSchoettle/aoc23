@@ -8,6 +8,7 @@ import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 public abstract class AbstractSolver {
     private final int day;
@@ -29,20 +30,33 @@ public abstract class AbstractSolver {
 
     public abstract Object puzzle2() throws Exception;
 
-    @SuppressWarnings("CallToPrintStackTrace")
     public void solve() {
-        try {
-            System.out.println("Solution for puzzle1: " + puzzle1());
-        } catch (Exception e) {
-            System.out.println("Error in calculation for solution 1:");
-            e.printStackTrace();
-        }
+        measure(this::solve1).printResult();
+        measure(this::solve2).printResult();
+    }
 
+    private Result measure(Supplier<Result> method) {
+        var start = System.nanoTime();
+        var result = method.get();
+        var end = System.nanoTime() - start;
+
+        result.setNanos(end);
+        return result;
+    }
+
+    private Result solve1() {
         try {
-            System.out.println("Solution for puzzle2: " + puzzle2());
+            return new Result.Solution(puzzle1());
         } catch (Exception e) {
-            System.out.println("Error in calculation for solution 2:");
-            e.printStackTrace();
+            return new Result.Error(e);
+        }
+    }
+
+    private Result solve2() {
+        try {
+            return new Result.Solution(puzzle2());
+        } catch (Exception e) {
+            return new Result.Error(e);
         }
     }
 
