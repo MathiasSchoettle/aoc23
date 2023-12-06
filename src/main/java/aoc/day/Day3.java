@@ -12,10 +12,6 @@ public class Day3 extends AbstractSolver {
     private static final Pattern NUMBERS = Pattern.compile("\\d+");
     public static final Pattern STAR = Pattern.compile("\\*");
 
-    public Day3() {
-        super(3);
-    }
-
     @Override
     public Object puzzle1() {
         var sum = 0;

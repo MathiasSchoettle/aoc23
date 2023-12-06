@@ -13,15 +13,17 @@ import java.util.function.Supplier;
 public abstract class AbstractSolver {
     private final int day;
     private final String input;
-    private static final String YEAR = "2023";
+    private final String year;
     private static final String SESSION_COOKIE;
 
     static {
         SESSION_COOKIE = System.getenv("SESSION_COOKIE");
     }
 
-    public AbstractSolver(int day) {
-        this.day = day;
+    public AbstractSolver() {
+        String number = this.getClass().getSimpleName().replaceAll("\\D", "");
+        this.day = Integer.parseInt(number);
+        this.year = "2023";
         persistInput();
         this.input = readFile();
     }
@@ -99,7 +101,7 @@ public abstract class AbstractSolver {
     }
 
     private String getInput() {
-        var urlString = String.format("https://adventofcode.com/%s/day/%s/input", YEAR, day);
+        var urlString = String.format("https://adventofcode.com/%s/day/%s/input", year, day);
 
         try (var client = HttpClient.newHttpClient()) {
 

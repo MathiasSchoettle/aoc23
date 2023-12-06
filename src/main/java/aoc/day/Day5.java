@@ -8,10 +8,6 @@ import java.util.regex.Pattern;
 
 public class Day5 extends AbstractSolver {
 
-    public Day5() {
-        super(5);
-    }
-
     @Override
     public Object puzzle1() {
         var inputs = splitByEmptyLine();

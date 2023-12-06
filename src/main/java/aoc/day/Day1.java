@@ -5,7 +5,6 @@ import aoc.AbstractSolver;
 import java.util.Map;
 
 public class Day1 extends AbstractSolver {
-    public Day1() {super(1);}
 
     @Override
     public Integer puzzle1() {

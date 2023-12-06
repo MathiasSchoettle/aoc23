@@ -8,9 +8,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Day4 extends AbstractSolver {
-    public Day4() {
-        super(4);
-    }
 
     @Override
     public Object puzzle1() {

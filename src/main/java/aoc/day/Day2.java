@@ -6,9 +6,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Day2 extends AbstractSolver {
-    public Day2() {
-        super(2);
-    }
 
     @Override
     public Integer puzzle1() {

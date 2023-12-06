@@ -5,9 +5,6 @@ import aoc.AbstractSolver;
 import java.util.Arrays;
 
 public class Day6 extends AbstractSolver {
-    public Day6() {
-        super(6);
-    }
 
     @Override
     public Object puzzle1() {
