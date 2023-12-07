@@ -38,7 +38,7 @@ public class Day7 extends AbstractSolver {
                        .replace("J", "B")
                        .replace("T", "A");
 
-        var test = Arrays.stream(hex.split(""))
+        var handType = Arrays.stream(hex.split(""))
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.toList()))
                 .values().stream()
                 .map(List::size)
@@ -46,18 +46,7 @@ public class Day7 extends AbstractSolver {
                 .map(String::valueOf)
                 .collect(Collectors.joining());
 
-        long handType = switch (test) {
-            case "11111" -> 1;
-            case "2111"  -> 2;
-            case "221"   -> 3;
-            case "311"   -> 4;
-            case "32"    -> 5;
-            case "41"    -> 6;
-            case "5"     -> 7;
-            default -> throw new IllegalStateException("Unexpected value: " + test);
-        };
-
-        return Long.parseLong(handType + hex, 16);
+        return Long.parseLong(List.of("11111", "2111", "221", "311", "32", "41", "5").indexOf(handType) + hex, 16);
     }
 
     @Override
