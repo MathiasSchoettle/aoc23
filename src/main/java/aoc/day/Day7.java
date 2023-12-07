@@ -3,10 +3,14 @@ package aoc.day;
 import aoc.AbstractSolver;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.*;
+
 public class Day7 extends AbstractSolver {
+    private static final List<String> MAPPINGS = List.of("11111", "2111", "221", "311", "32", "41", "5");
 
     @Override
     public Object puzzle1() {
@@ -20,33 +24,27 @@ public class Day7 extends AbstractSolver {
                         TreeMap::new
                 ));
 
-        long i = 1, sum = 0L;
-
-        for (var entry : mapped.entrySet()) {
-            sum += i++ * entry.getValue();
-        }
-
-        return sum;
+        var i = new AtomicLong(1);
+        return mapped.values().stream().reduce(0L, (v1, v2) -> v1 + i.getAndIncrement() * v2);
     }
 
     private long strength(String card) {
-
         // Ace (A) is also valid hex
         var hex = card.replace("A", "E")
-                       .replace("K", "D")
-                       .replace("Q", "C")
-                       .replace("J", "B")
-                       .replace("T", "A");
+                      .replace("K", "D")
+                      .replace("Q", "C")
+                      .replace("J", "B")
+                      .replace("T", "A");
 
         var handType = Arrays.stream(hex.split(""))
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.toList()))
+                .collect(groupingBy(Function.identity(), Collectors.toList()))
                 .values().stream()
                 .map(List::size)
                 .sorted(Comparator.reverseOrder())
                 .map(String::valueOf)
                 .collect(Collectors.joining());
 
-        return Long.parseLong(List.of("11111", "2111", "221", "311", "32", "41", "5").indexOf(handType) + hex, 16);
+        return Long.parseLong(MAPPINGS.indexOf(handType) + hex, 16);
     }
 
     @Override
