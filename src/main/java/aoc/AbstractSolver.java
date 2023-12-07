@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 public abstract class AbstractSolver {
     private final int day;
-    private final String input;
+    private String input;
     private final String year;
     private static final String SESSION_COOKIE;
 
@@ -98,6 +98,16 @@ public abstract class AbstractSolver {
         } catch (Exception e) {
             throw new RuntimeException("Error while persisting input of " + day + " - " + e.getCause());
         }
+    }
+
+    public void reload() {
+        try {
+            Files.deleteIfExists(getInputFile().toPath());
+        } catch (Exception e) {
+            throw new RuntimeException("Error while reloading input of " + day + " - " + e.getCause());
+        }
+        persistInput();
+        this.input = readFile();
     }
 
     private String getInput() {
