@@ -16,8 +16,10 @@ public sealed abstract class Result permits Result.Error, Result.Solution {
             this.exception = exception;
         }
 
+        @SuppressWarnings("CallToPrintStackTrace")
         @Override
         public String message() {
+            exception.printStackTrace();
             return "Ended exceptionally " + exception.getCause() + ", " + exception.getMessage();
         }
     }
