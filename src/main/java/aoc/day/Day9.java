@@ -9,7 +9,7 @@ import java.util.List;
 public class Day9 extends AbstractSolver {
 
     @Override
-    public Object puzzle1() throws Exception {
+    public Object puzzle1() {
 
         var sum = 0L;
 
@@ -30,7 +30,7 @@ public class Day9 extends AbstractSolver {
     }
 
     @Override
-    public Object puzzle2() throws Exception {
+    public Object puzzle2() {
         var sum = 0L;
 
         for (var line : lines()) {
